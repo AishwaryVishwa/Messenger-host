@@ -1,102 +1,67 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const bcrypt =require('bcryptjs')
+const bcrypt = require('bcryptjs')
 const router = express.Router();
-
-
+const jwt=require('jsonwebtoken')
+const {generateToken} =require('./authenticator')
 require('../DATABASE/dbConnect')
-const Users = require('../DATABASE/userCollection')
 
-// registration of new user
+const UserModel = require('../DATABASE/Models/UserModel');
+
 router.post('/register', async (req, res) => {
 
-    const { name, email, phone, password } = req.body;
+    const { name, email, password, profImage } = req.body;
 
-    try {
-
-        const userExist = await Users.findOne({ email: email })
-
-        //   throw new Error('yeahhh errorrr') // throwing error catch it also bt dont show in respose
-
-
-        if (userExist) {
-           return res.status(422).send({ message: "already exist" })
-        }
-        const newUser = new Users(req.body);
-        await newUser.save();
-          res.status(200).send({ message: "added new user" })
+    const isPresent = await UserModel.findOne({ email: email });
+    if (isPresent) {
+        res.status(404).send({ message: "user already present" })
+    } else {
+        const newUser = await UserModel.create(req.body);
+        res.status(200).send({
+            _id: newUser._id,
+            name: newUser.name,
+            email: newUser.email,
+            password: newUser.password,
+            profImage: newUser.profImage,
+            token:newUser.token
+        })
     }
-    catch (err) {
-        console.log(err);
-         res.status(404).send(err)
-    }
+
 
 })
-
-
-// now login of pre-existed user
-
 
 router.post('/login',async (req,res)=>{
-     
-    const {name,email,phone,password}=req.body;
-    let token;
-    try{
-        
-        // throw new Error("hehe error")
 
-
-        const user=await Users.findOne({email:email})
-        
-        if(!user)
+    try {
+        const {email,password}=req.body;
+        if(!email || !password)
         {
-            console.log('user not exist');
-             res.status(404).send({message:"user is not registered,register user first"})
+            res.status(404).send({message:"fill information"})
+        }
+        const isPresent=await UserModel.findOne({email:email});
+
+        if(isPresent){
+                  const verified=await bcrypt.compare(password,isPresent.password);
+                   console.log(verified);
+                  if(verified){
+                    const token=isPresent.generateToken();
+                    res.cookie('userToken',token)
+                    res.status(200).send({message:"user is loggined successful"})
+                  }else
+                  {
+                    res.send({message:"wrong credentials"})
+                  }
         }else{
-           
-            /// decryption of password store in database and compare it with password entered by user
-            const decrytedPassword= await bcrypt.compare(password,user.password)
-            if(decrytedPassword)
-            {
-                token=user.generateToken();
-                console.log(`login successful for user ${name}`);
-                console.log(token);
-                 res.status(200).send({message:`login successful for user ${name}`});
-            }
-            else
-            {
-                console.log('password is incorrect');
-                res.status(404).send({message:'passwoed is incorrect '})
-            }
+            res.send({message:"user is not present"})
         }
         
+    } catch (error) {
+        console.log(error);
+        res.status(404).send(error)
     }
-    catch(err)
-    {
-        console.log(err);
-        res.status(404).send({error:err})
-    }
-        
-})
+    
 
 
-
-router.get('/', (req, res) => {
-    res.send('Home page 2')
-})
-
-
-router.get('/about', (req, res) => {
-    res.send(' about 2')
-})
-
-router.get('/signUp', (req, res) => {
-    res.send(' signUp 2')
-})
-
-
-router.get('/login', (req, res) => {
-    res.send(' login 2')
 })
 
 module.exports = router

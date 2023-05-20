@@ -12,9 +12,8 @@ function Register() {
     const [email,setEmail]=useState()
     const [passW,setPassW]=useState()
     const [pic,setPic]=useState()
-
     const submitHandler=()=>{
-        
+
     }
     return (
         <div>
@@ -45,7 +44,7 @@ function Register() {
                         <Input p='1' onChange={(e)=>setPic(e.target.files[0])} type='file' accept='image/*' placeholder='password' />
                     </FormControl>
               
-                   <Button onClick={submitHandler}>
+                   <Button colorScheme='blue' onClick={submitHandler}>
 
                          Sign up
 
