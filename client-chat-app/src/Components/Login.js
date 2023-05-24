@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 import {
     Button,
     VStack,
@@ -9,6 +11,17 @@ import {
 function Login() {
     const [email,setEmail]=useState();
     const [passw,setPassw]=useState();
+    const navigate=useNavigate();
+    const loginData={
+        email:email,
+        password:passw
+    }
+    const loginHandler= async ()=>{
+          const res=await axios.post('/login',loginData)
+          window.alert(res.data.message)
+          navigate('/chatPage')
+    }
+
     return (
         <div>
             <VStack
@@ -26,7 +39,7 @@ function Login() {
                 <Input onChange={(e)=>setPassw(e.target.value)} type='password' placeholder='password' ></Input>
                </FormControl>
 
-               <Button colorScheme='blue' >
+               <Button colorScheme='blue' onClick={loginHandler} >
                   Sign in
                </Button>
             </VStack>

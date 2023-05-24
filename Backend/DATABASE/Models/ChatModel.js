@@ -12,7 +12,7 @@ const chatSchema=mongoose.Schema(
         },
         users:[{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'User'
+            ref:"User"
         }],
         latestMsg:{
             type:mongoose.Schema.Types.ObjectId,

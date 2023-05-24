@@ -13,8 +13,8 @@ app.use(require('./Router/auth'))
 
 
 
-app.listen(5000,()=>{
-    console.log('server started at 5000');
+app.listen(8000,()=>{
+    console.log('server started at 8000');
 })
 
 // console.log(module);
