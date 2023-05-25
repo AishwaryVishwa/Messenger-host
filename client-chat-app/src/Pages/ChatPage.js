@@ -1,31 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState,useContext } from 'react'
+import UserProvider from '../Context/UserProvider';
+import {userContext} from '../Context/UserProvider';
+import SideBar from '../Components/SideBar';
+import { Box } from '@chakra-ui/react';
+import MyChats from '../Components/MyChats';
+import Chats from '../Components/Chats';
+
 import { useNavigate } from 'react-router';
 function ChatPage() {
     const navigate=useNavigate()
-    const [userDetails,setUserDetails]=useState({});
-    useEffect(() => {
-       fetch('/chatPage')
-       .then((res)=>{
-            if(res.status===300)
-            {
-                // window.alert("login first")
-                navigate('/')
-            }else{
+    const {userData, setuserData}=useContext(userContext)
+   
+    useEffect( () => {
+          
+        const user=localStorage.getItem('userInfo');
 
-                return res.json()
-            }
-       })
-       .then((data)=>{
-       setUserDetails(data)
-       });
+        if(!user)
+        {
+          navigate('/')
+        }else{
+          setuserData(JSON.parse(user))
+        }
+
     },[])
     
   return (
     <>
-    <h1>{userDetails.name}</h1>
-    <h1>{userDetails.email}</h1>
-
+    
+    
+      {userData && <SideBar/>}
+      <Box
+         display='flex'
+         
+      >
+      {userData && <MyChats/>}
+      {userData && <Chats/>} 
+      </Box>
     
     </>
   )

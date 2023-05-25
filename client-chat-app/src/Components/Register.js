@@ -14,19 +14,19 @@ function Register() {
     const [passW, setPassW] = useState()
     const [pic, setPic] = useState()
 
-    const userData = {
+    const user = {
         name: name,
         email: email,
         password: passW,
         profImage: pic
     }
-    let options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
-    }
+    // let options = {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(userData)
+    // }
     const postImage = (pic) => {
         if (pic == undefined) {
             window.alert('profile image is not selected');
@@ -53,15 +53,12 @@ function Register() {
     }
     const submitHandler = async () => {
 
-        axios.post('/register', userData)
-            .then((res) => {
-                if (res.status === 200) {
-                    window.alert("user registered successfully")
-                } else {
+       const res=await axios.post('/register',user);
 
-                    window.alert(res.data.message)
-                }
-            })
+       if(res.status===201)
+       window.alert(res.message)
+
+       window.alert('User is registered')
 
 
         // console.log(res);

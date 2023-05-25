@@ -45,16 +45,20 @@ router.post('/login', async (req, res) => {
             res.status(404).send({ message: "fill information" })
         }
         const isPresent = await User.findOne({ email: email });
-
+         console.log(isPresent);
         if (isPresent) {
             const verified = await bcrypt.compare(password, isPresent.password);
             console.log(verified);
             if (verified) {
-                const token = await isPresent.generateToken();
-                // console.log(token);
-                res.cookie('userToken', token)
-                // console.log(req.cookies);
-                res.status(200).send({ message: "user is loggined successful" })
+                
+                res.send({
+                    _id:isPresent._id,
+                    name: isPresent.name,
+                    email: isPresent.email,
+                    profImage:isPresent.profImage,
+                    token: await isPresent.generateToken(),
+                })
+                
             } else {
                 res.send({ message: "wrong credentials" })
             }
@@ -72,7 +76,9 @@ router.post('/login', async (req, res) => {
 })
 
 router.get('/chatPage', verifyToken, (req, res) => {
+    
     console.log('chat server is running');
+    // res.send(req.user)
 })
 
 
@@ -123,7 +129,7 @@ router.post('/startChat', async (req, res) => {
 
 router.post('/fetchChats', async (req, res) => {
     const { userId } = req.body;
-
+    // console.log(req.body);
     try {
         const allchats = await Chat.find({ users: { $elemMatch: { $eq: userId } } })
             .populate('users', '-password')
@@ -218,6 +224,24 @@ router.put('/addToGrp',async (req,res)=>{
         res.send(error.message);
     }
 })
+
+
+
+router.get('/searchUsers',async (req,res)=>{
+    const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword).find({ _id: { $ne: req.query.user._id } });
+  res.send(users);
+})
+
+
 router.get('/', (req, res) => {
     res.send("Welcome to backend server")
 })
