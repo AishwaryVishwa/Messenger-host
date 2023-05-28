@@ -103,18 +103,18 @@ router.post('/startChat', async (req, res) => {
         //     path:"latestMsg.sender",
         //     select:"name email profImage"
         // })
-        if (isChat.length > 0) {
+        if (isChat.length !== 0) {
             console.log('inside is chat');
             res.send(isChat[0]);
         }
         else {
             var newChat = {
-                chatName: "sender",
+                chatName: 'sender',
                 isGroupChat: false,
                 users: [userId, receiverId]
             }
             const createChat = await Chat.create(newChat)
-            const getNewChat = await User.findOne({ _id: createChat._id }).populate("users", "-password")
+            const getNewChat = await Chat.findById(createChat._id).populate('users','-password')
             res.send(getNewChat)
         }
     } catch (error) {
@@ -146,11 +146,11 @@ router.post('/createGroupChat', async (req, res) => {
     const { userId, grpName, grpUsers } = req.body;
 
     if (!userId || !grpUsers || !grpName)
-        res.send({ message: "please fill all fields" })
+        return res.status(202).send({ message: "please fill all fields" })
 
     const users = JSON.parse(grpUsers);
     if (users.length < 2) {
-        res.send({ message: "Atleast two users are required for group chat" })
+       return res.status(202).send({ message: "Atleast two users are required for group chat" })
     }
 
     users.push(userId)
@@ -170,7 +170,7 @@ router.post('/createGroupChat', async (req, res) => {
 
         res.send(findNewGrp)
     } catch (error) {
-        res.send(error.message)
+        res.status(300).send({message:error.message})
     }
 })
 

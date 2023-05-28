@@ -8,3 +8,17 @@
   
   font-family: 'Inter', sans-serif;;
 }
+
+::-webkit-scrollbar {
+  width: 2px; 
+}
+
+::-webkit-scrollbar-track {
+background-color: rgb(243, 239, 239);
+display: none;
+}
+
+::-webkit-scrollbar-thumb {
+background: #4e4e4e;
+border-radius: 25px;
+}

@@ -27,7 +27,7 @@ import { TbBrandHipchat, TbChevronDown } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom'
 
 import DetailModal from "./DetailModal"
-function SideBar() {
+function SideBar({fetchAgain,setFetchAgain}) {
     const { userData } = useContext(userContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const navigate = useNavigate()
@@ -41,6 +41,16 @@ function SideBar() {
             localStorage.clear();
             navigate('/')
         }
+    }
+
+    const accessChat=async(id)=>{
+        const chat=await axios.post('/startChat',{
+            userId:userData._id,
+            receiverId:id
+        });
+         setFetchAgain(!fetchAgain)
+         onClose()
+        console.log(chat.data);
     }
 
     const searchApi = async () => {
@@ -116,6 +126,7 @@ function SideBar() {
                                     display='flex'
                                     flexDirection='column'
                                     // padding='2px'
+                                    
                                 >
 
                                     {userList.map((user) => {
@@ -128,7 +139,7 @@ function SideBar() {
                                               m='2'
                                               padding={2}
                                               borderRadius={10}
-                                              
+                                              onClick={()=>accessChat(user._id)}
                                             >
                                                 <Avatar name={user.name} src={user.profImage} />
                                                 <Text

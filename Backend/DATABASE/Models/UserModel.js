@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
     },
     profImage: {
         type: String,
-        default: 'https://avatars.mds.yandex.net/i?id=07e6d2fd144c63f23e6b1b1b07f996fc55365889-9099210-images-thumbs&n=13'
+        default:'https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o='
+        
     },
     token:{
         type:String

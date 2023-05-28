@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router';
 function ChatPage() {
     const navigate=useNavigate()
     const {userData, setuserData}=useContext(userContext)
-   
+    const [fetchAgain,setFetchAgain]=useState(false);
     useEffect( () => {
           
         const user=localStorage.getItem('userInfo');
@@ -28,13 +28,13 @@ function ChatPage() {
     <>
     
     
-      {userData && <SideBar/>}
+      {userData && <SideBar fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
       <Box
          display='flex'
          
       >
-      {userData && <MyChats/>}
-      {userData && <Chats/>} 
+      {userData && <MyChats fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
+      {userData && <Chats fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />} 
       </Box>
     
     </>
