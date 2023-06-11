@@ -191,6 +191,8 @@ router.put('/renameGroup', async (req, res) => {
         res.send(error.message)
     }
 })
+
+
 router.put('/removeFromGrp',async(req,res)=>{
     const {rId,grpId}=req.body;
     
@@ -200,7 +202,8 @@ router.put('/removeFromGrp',async(req,res)=>{
         },{
             returnOriginal:false
         })
-
+        .populate('users','-password')
+        .populate('groupAdmin','-password')
         res.send(grp);
     } catch (error) {
         console.log("error in removefrom group");

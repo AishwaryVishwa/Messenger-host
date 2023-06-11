@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import UpdateGroupModal from './UpdateGroupModal';
 import SenderDetails from './SenderDetails';
-function Chats() {
+function Chats({fetchAgain,setFetchAgain}) {
   const { userData, chatList, setChatList, selectedChat, setSelectedChat } = useContext(userContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
@@ -73,7 +73,7 @@ function Chats() {
                     <ModalBody>
                         {
                           (selectedChat.isGroupChat)?
-                          <UpdateGroupModal selectedChat={selectedChat} />
+                          <UpdateGroupModal fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}  onClose={onClose} />
                           :
                           <SenderDetails sender={selectedChat.users[0]._id === userData._id ? selectedChat.users[1] : selectedChat.users[0]} />
                         }

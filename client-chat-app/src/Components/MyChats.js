@@ -209,8 +209,8 @@ function MyChats({ fetchAgain, setFetchAgain }) {
               key={chats._id}
               display='flex'
               alignItems='center'
-              bg={(selectedChat===chats)?'gray.600':'gray.200'}
-              color={(selectedChat===chats)?'white':{}}
+              bg={(selectedChat)?(selectedChat._id===chats._id)?'gray.600':'gray.200':'gray.200'}
+              color={(selectedChat)?(selectedChat._id===chats._id)?'white':{}:{}}
               m='2'
               padding={2}
               borderRadius={10}
