@@ -8,6 +8,7 @@ require('../DATABASE/dbConnect')
 
 const User = require('../DATABASE/Models/UserModel');
 const Chat = require('../DATABASE/Models/ChatModel');
+const Message = require('../DATABASE/Models/MessageModel');
 
 router.post('/register', async (req, res) => {
 
@@ -42,10 +43,10 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            res.status(404).send({ message: "fill information" })
+           return res.status(504).send({ message: "fill information" })
         }
         const isPresent = await User.findOne({ email: email });
-         console.log(isPresent);
+         console.log('is present',isPresent);
         if (isPresent) {
             const verified = await bcrypt.compare(password, isPresent.password);
             console.log(verified);
@@ -192,6 +193,17 @@ router.put('/renameGroup', async (req, res) => {
     }
 })
 
+router.post('/deleteGroup',async (req,res)=>{
+    try {
+        const {grpId}=req.body;
+
+        const del=await Chat.deleteOne({_id:grpId})
+
+        res.send(del);
+    } catch (error) {
+        console.log(error.message);
+    }
+})
 
 router.put('/removeFromGrp',async(req,res)=>{
     const {rId,grpId}=req.body;
@@ -244,6 +256,47 @@ router.get('/searchUsers',async (req,res)=>{
   res.send(users);
 })
 
+router.post('/sendMessage',async(req,res)=>{
+
+
+    const {chatID,userId,content}=req.body;
+
+    if(!chatID || !content || !userId){
+        console.log('data is not given for messages');
+    }
+
+    let NewMsg={
+        sender:userId,  
+        content:content,
+        chat:chatID
+    }
+    
+
+    try {
+         const message=await Message.create(NewMsg);
+         console.log('created',message);
+
+
+         const msg=await Message.findOne({_id:message._id}).populate('sender').populate('chat');
+         const up=await Chat.findByIdAndUpdate(chatID,{
+            latestMsg:msg
+         }).populate('latestMsg')
+        //  console.log('finded msg',msg);
+         console.log(up);
+
+        // const yes=await Message.findById(message._id)
+        // console.log(yes);
+        //  message.populate('chat');
+        //  console.log(message);
+         res.send(msg)
+    } catch (error) {
+        
+    }
+
+
+    
+    
+})
 
 router.get('/', (req, res) => {
     res.send("Welcome to backend server")

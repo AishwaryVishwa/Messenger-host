@@ -3,12 +3,12 @@ const mongoose=require('mongoose')
 const msgSchema=mongoose.Schema({
         sender:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'User'
+            ref:"User"
         },
         content:{type:String},
         chat:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'Chat'
+            ref:"Chat"
         }
 },
 {

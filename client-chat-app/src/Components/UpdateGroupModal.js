@@ -60,6 +60,17 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
       setFetchAgain(!fetchAgain)
 
       if (data.users.length === 0 || member._id === userData._id) {
+
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            grpId: selectedChat._id
+          })
+        };
+        const res = await fetch('/deleteGroup', requestOptions)
+        const data = await res.json();
+        console.log("deleted grp",data);
         setSelectedChat()
         onClose();
 
