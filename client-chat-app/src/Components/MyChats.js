@@ -84,7 +84,7 @@ function MyChats({ fetchAgain, setFetchAgain }) {
       const chats = await axios.post('/fetchChats', {
         userId: userData._id
       })
-      console.log(chats);
+      console.log(chats.data.length);
       if (chats.data.length > 0) {
         setChatList(chats.data)
       } else {
@@ -203,8 +203,9 @@ function MyChats({ fetchAgain, setFetchAgain }) {
             </ModalContent>
           </Modal>
         </Box>
-        {chatList && chatList.map((chats) => {
+        {chatList && selectedChat && chatList.map((chats) => {
           return (
+           
             <Box
               key={chats._id}
               display='flex'
