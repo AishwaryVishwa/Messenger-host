@@ -2,6 +2,7 @@
   "name": "client-chat-app",
   "version": "0.1.0",
   // "proxy": "http://localhost:8000/",
+  "proxy": "https://react-chat-backend-qw1qwfxnw-aishwaryvishwa.vercel.app/",
   // "proxy": "https://react-chat-backend-new.vercel.app/",
   "private": true,
   "dependencies": {
