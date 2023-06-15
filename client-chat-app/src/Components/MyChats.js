@@ -203,7 +203,7 @@ function MyChats({ fetchAgain, setFetchAgain }) {
             </ModalContent>
           </Modal>
         </Box>
-        {chatList && selectedChat && chatList.map((chats) => {
+        {chatList && chatList.map((chats) => {
           return (
            
             <Box
