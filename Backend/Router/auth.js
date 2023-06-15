@@ -210,6 +210,13 @@ router.put('/removeFromGrp',async(req,res)=>{
     const {rId,grpId}=req.body;
     
     try {
+
+        const check=await Chat.findById(grpId);
+        console.log(check);
+        if(check.users.length<=2)
+        {
+            return res.status(201).send({message:"atleast two user must be present in group"})
+        }
         const grp=await Chat.findByIdAndUpdate(grpId,{
             $pull:{users:{$eq:rId}}
         },{
@@ -217,6 +224,7 @@ router.put('/removeFromGrp',async(req,res)=>{
         })
         .populate('users','-password')
         .populate('groupAdmin','-password')
+        console.log(grp);
         res.send(grp);
     } catch (error) {
         console.log("error in removefrom group");

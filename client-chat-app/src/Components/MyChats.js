@@ -84,7 +84,7 @@ function MyChats({ fetchAgain, setFetchAgain }) {
       const chats = await axios.post('/fetchChats', {
         userId: userData._id
       })
-      console.log(chats.data.length);
+      console.log(chats.data);
       if (chats.data.length > 0) {
         setChatList(chats.data)
       } else {
@@ -106,7 +106,7 @@ function MyChats({ fetchAgain, setFetchAgain }) {
   }, [fetchAgain])
 
 
-  console.log('selected chat is',selectedChat);
+  console.log('selected chat is',chatList);
   return (
 
 

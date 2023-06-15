@@ -53,14 +53,17 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
         })
       };
       const res = await fetch('/removeFromGrp', requestOptions)
+      console.log(res.body);
       const data = await res.json();
-
-
+      console.log("data is",data);
+      // if(res.status===201)
+      // window.alert(res.message)
 
       setFetchAgain(!fetchAgain)
 
+      
       if (data.users.length === 0 || member._id === userData._id) {
-
+        
         const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -70,6 +73,7 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
         };
         const res = await fetch('/deleteGroup', requestOptions)
         const data = await res.json();
+        setFetchAgain(!fetchAgain)
         console.log("deleted grp",data);
         setSelectedChat()
         onClose();
@@ -96,7 +100,7 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
           grpId: selectedChat._id,
           newname: groupName
         })
-      };
+      };  
       const res = await fetch('/renameGroup', requestOptions)
       const data = await res.json();
       console.log(data);
