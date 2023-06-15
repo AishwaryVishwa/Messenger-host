@@ -42,8 +42,9 @@ router.post('/login', async (req, res) => {
 
     try {
         const { email, password } = req.body;
+        console.log(email,password);
         if (!email || !password) {
-           return res.status(504).send({ message: "fill information" })
+           return res.status(202).send({ message: "fill information" })
         }
         const isPresent = await User.findOne({ email: email });
          console.log('is present',isPresent);
@@ -69,7 +70,7 @@ router.post('/login', async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(404).send(error)
+        // res.status(404).send(error)
     }
 
 

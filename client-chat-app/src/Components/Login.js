@@ -25,7 +25,7 @@ function Login() {
             localStorage.setItem('userInfo',JSON.stringify(res.data))
             navigate('/chatPage')
         }else{
-            window.alert(res.message)
+            window.alert(res.data.message)
         }
     }
 
