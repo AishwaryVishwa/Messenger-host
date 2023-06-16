@@ -275,7 +275,7 @@ router.post('/sendMessage',async(req,res)=>{
     }
 
     let NewMsg={
-        sender:userId,  
+        sender:userId,      
         content:content,
         chat:chatID
     }
@@ -299,12 +299,23 @@ router.post('/sendMessage',async(req,res)=>{
         //  console.log(message);
          res.send(msg)
     } catch (error) {
-        
+        console.log(error);
     }
+})
 
 
-    
-    
+router.get('/allMessages',async(req,res)=>{
+    const chatID=req.query.chat;
+
+
+    try {
+        const messages=await Message.find({chat:chatID}).populate('chat');
+       
+        console.log(messages);
+        res.send(messages)
+    } catch (error) {
+       console.log(error);   
+    }
 })
 
 router.get('/', (req, res) => {

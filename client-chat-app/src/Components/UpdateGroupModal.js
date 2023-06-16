@@ -56,8 +56,8 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
       console.log(res.body);
       const data = await res.json();
       console.log("data is",data);
-      // if(res.status===201)
-      // window.alert(res.message)
+      if(res.status===201)
+      window.alert(data.message)
 
       setFetchAgain(!fetchAgain)
 

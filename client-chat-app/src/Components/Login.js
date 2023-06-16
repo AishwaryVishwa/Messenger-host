@@ -17,7 +17,7 @@ function Login() {
         password: passw
     }
     const loginHandler = async () => {
-        const res = await axios.post('https://react-chat-backend-new.vercel.app/login', loginData)
+        const res = await axios.post('/login', loginData)
         if (res.status === 200) {
 
             window.alert('login successful')
