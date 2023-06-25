@@ -42,25 +42,25 @@ router.post('/login', async (req, res) => {
 
     try {
         const { email, password } = req.body;
-        console.log(email,password);
+        console.log(email, password);
         if (!email || !password) {
-           return res.status(202).send({ message: "fill information" })
+            return res.status(202).send({ message: "fill information" })
         }
         const isPresent = await User.findOne({ email: email });
-         console.log('is present',isPresent);
+        console.log('is present', isPresent);
         if (isPresent) {
             const verified = await bcrypt.compare(password, isPresent.password);
             console.log(verified);
             if (verified) {
-                
+
                 res.send({
-                    _id:isPresent._id,
+                    _id: isPresent._id,
                     name: isPresent.name,
                     email: isPresent.email,
-                    profImage:isPresent.profImage,
+                    profImage: isPresent.profImage,
                     token: await isPresent.generateToken(),
                 })
-                
+
             } else {
                 res.send({ message: "wrong credentials" })
             }
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
 })
 
 router.get('/chatPage', verifyToken, (req, res) => {
-    
+
     console.log('chat server is running');
     // res.send(req.user)
 })
@@ -116,7 +116,7 @@ router.post('/startChat', async (req, res) => {
                 users: [userId, receiverId]
             }
             const createChat = await Chat.create(newChat)
-            const getNewChat = await Chat.findById(createChat._id).populate('users','-password')
+            const getNewChat = await Chat.findById(createChat._id).populate('users', '-password')
             res.send(getNewChat)
         }
     } catch (error) {
@@ -152,7 +152,7 @@ router.post('/createGroupChat', async (req, res) => {
 
     const users = JSON.parse(grpUsers);
     if (users.length < 2) {
-       return res.status(202).send({ message: "Atleast two users are required for group chat" })
+        return res.status(202).send({ message: "Atleast two users are required for group chat" })
     }
 
     users.push(userId)
@@ -172,7 +172,7 @@ router.post('/createGroupChat', async (req, res) => {
 
         res.send(findNewGrp)
     } catch (error) {
-        res.status(300).send({message:error.message})
+        res.status(300).send({ message: error.message })
     }
 })
 
@@ -185,8 +185,8 @@ router.put('/renameGroup', async (req, res) => {
         }, {
             returnOriginal: false
         })
-        .populate('users','-password')
-        .populate('groupAdmin','-password')
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password')
         res.send(updatedGrp)
     } catch (error) {
         console.log("error in rename group");
@@ -194,11 +194,11 @@ router.put('/renameGroup', async (req, res) => {
     }
 })
 
-router.post('/deleteGroup',async (req,res)=>{
+router.post('/deleteGroup', async (req, res) => {
     try {
-        const {grpId}=req.body;
+        const { grpId } = req.body;
 
-        const del=await Chat.deleteOne({_id:grpId})
+        const del = await Chat.deleteOne({ _id: grpId })
 
         res.send(del);
     } catch (error) {
@@ -206,24 +206,23 @@ router.post('/deleteGroup',async (req,res)=>{
     }
 })
 
-router.put('/removeFromGrp',async(req,res)=>{
-    const {rId,grpId}=req.body;
-    
+router.put('/removeFromGrp', async (req, res) => {
+    const { rId, grpId } = req.body;
+
     try {
 
-        const check=await Chat.findById(grpId);
+        const check = await Chat.findById(grpId);
         console.log(check);
-        if(check.users.length<=2)
-        {
-            return res.status(201).send({message:"atleast two user must be present in group"})
+        if (check.users.length <= 2) {
+            return res.status(201).send({ message: "atleast two user must be present in group" })
         }
-        const grp=await Chat.findByIdAndUpdate(grpId,{
-            $pull:{users:{$eq:rId}}
-        },{
-            returnOriginal:false
+        const grp = await Chat.findByIdAndUpdate(grpId, {
+            $pull: { users: { $eq: rId } }
+        }, {
+            returnOriginal: false
         })
-        .populate('users','-password')
-        .populate('groupAdmin','-password')
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password')
         console.log(grp);
         res.send(grp);
     } catch (error) {
@@ -232,14 +231,14 @@ router.put('/removeFromGrp',async(req,res)=>{
     }
 
 })
-router.put('/addToGrp',async (req,res)=>{
-    const {grpId,AddId}=req.body;
+router.put('/addToGrp', async (req, res) => {
+    const { grpId, AddId } = req.body;
 
     try {
-        const grp=await Chat.findByIdAndUpdate(grpId,{
-            $push:{users:AddId}
-        },{
-            returnOriginal:false
+        const grp = await Chat.findByIdAndUpdate(grpId, {
+            $push: { users: AddId }
+        }, {
+            returnOriginal: false
         })
 
         res.send(grp);
@@ -251,70 +250,84 @@ router.put('/addToGrp',async (req,res)=>{
 
 
 
-router.get('/searchUsers',async (req,res)=>{
+router.get('/searchUsers', async (req, res) => {
     const keyword = req.query.search
-    ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
-    : {};
+        ? {
+            $or: [
+                { name: { $regex: req.query.search, $options: "i" } },
+                { email: { $regex: req.query.search, $options: "i" } },
+            ],
+        }
+        : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.query.user._id } });
-  res.send(users);
+    const users = await User.find(keyword).find({ _id: { $ne: req.query.user._id } });
+    res.send(users);
 })
 
-router.post('/sendMessage',async(req,res)=>{
+router.post('/sendMessage', async (req, res) => {
 
 
-    const {chatID,userId,content}=req.body;
+    const { chatID, userId, content } = req.body;
 
-    if(!chatID || !content || !userId){
+    if (!chatID || !content || !userId) {
         console.log('data is not given for messages');
     }
 
-    let NewMsg={
-        sender:userId,      
-        content:content,
-        chat:chatID
+
+    let NewMsg = {
+        sender: userId,
+        content: content,
+        chat: chatID
     }
-    
+
 
     try {
-         const message=await Message.create(NewMsg);
-         console.log('created',message);
+        const message = await Message.create(NewMsg);
+        console.log('created', message);
 
 
-         const msg=await Message.findOne({_id:message._id}).populate('sender').populate('chat');
-         const up=await Chat.findByIdAndUpdate(chatID,{
-            latestMsg:msg
-         }).populate('latestMsg')
-        //  console.log('finded msg',msg);
-         console.log(up);
+        const msg = await Message.findOne({ _id: message._id }).populate('sender').populate('chat').populate({
+            path: 'chat',
+            populate: {
+              path: 'users',
+              select: '_id name email profImage'
+            }
+          }).populate({
+            path: 'chat',
+            populate: {
+              path: 'latestMsg',
+            }
+          });
+        
+
+        
+
+        
+         console.log('finded msg',msg);
+        // console.log(up);
 
         // const yes=await Message.findById(message._id)
         // console.log(yes);
         //  message.populate('chat');
         //  console.log(message);
-         res.send(msg)
+        res.send(msg)
     } catch (error) {
         console.log(error);
     }
 })
 
 
-router.get('/allMessages',async(req,res)=>{
-    const chatID=req.query.chat;
+router.get('/allMessages', async (req, res) => {
+    const chatID = req.query.chat;
 
 
     try {
-        const messages=await Message.find({chat:chatID}).populate('chat');
-       
-        console.log(messages);
+        const messages = await Message.find({ chat: chatID }).populate('chat').populate('sender');
+
+        // console.log(messages);
         res.send(messages)
     } catch (error) {
-       console.log(error);   
+        console.log(error);
     }
 })
 

@@ -106,7 +106,7 @@ function MyChats({ fetchAgain, setFetchAgain }) {
   }, [fetchAgain])
 
 
-  console.log('selected chat is',chatList);
+  console.log('selected chat is',selectedChat);
   return (
 
 
