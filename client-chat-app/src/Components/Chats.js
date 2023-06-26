@@ -98,21 +98,21 @@ function Chats({ fetchAgain, setFetchAgain }) {
   }, [selectedChat])
 
   useEffect(() => {
-    // socket.on('hii', (msgreceived) => {
+    socket.on('hii', (msgreceived) => {
 
-    //   console.log("message received on client side ",msgreceived);
-    //   if (!compareSelectedChat || compareSelectedChat !== msgreceived.chat.sender) {
-    //     console.log(" notification work required");
-    //   }
-    //   else {
-    //     setMessages([...Messages, msgreceived]);
-    //   }
-    // })
-
-    socket.on('hii',(data)=>{
-      console.log("hiiiiiii");
-      setMessages([...Messages,data])
+      console.log("message received on client side ",msgreceived);
+      if (!compareSelectedChat || compareSelectedChat !== msgreceived.chat.sender) {
+        console.log(" notification work required");
+      }
+      else {
+        setMessages([...Messages, msgreceived]);
+      }
     })
+
+    // socket.on('hii',(data)=>{
+    //   console.log("hiiiiiii");
+    //   setMessages([...Messages,data])
+    // })
   })
 
 
