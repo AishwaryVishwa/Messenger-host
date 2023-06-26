@@ -23,7 +23,7 @@ import UpdateGroupModal from './UpdateGroupModal';
 import SenderDetails from './SenderDetails';
 
 
-var ENDPOINT = "http://localhost:8000"
+var ENDPOINT = "https://chat-application-backend-git-main-aishwaryvishwa.vercel.app/"
 let socket, compareSelectedChat;
 function Chats({ fetchAgain, setFetchAgain }) {
   const { userData, chatList, setChatList, selectedChat, setSelectedChat } = useContext(userContext)
