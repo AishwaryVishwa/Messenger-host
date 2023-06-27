@@ -1,7 +1,6 @@
 {
   "name": "client-chat-app",
   "version": "0.1.0",
-  "proxy": "https://chat-application-backend-kjw6m2wkh-aishwaryvishwa.vercel.app  ",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.6.1",
