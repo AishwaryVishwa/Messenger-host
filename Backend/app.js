@@ -23,7 +23,7 @@ app.use(require('./Router/auth'))
 const io=new Server(server,{
     pingTimeout:60000,
     cors:{
-        origin:"http://chat-application-frontend-h29qamhyj-aishwaryvishwa.vercel.app"
+        origin:"http://http://localhost:3000"
     }
 })
 
