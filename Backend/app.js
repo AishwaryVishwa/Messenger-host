@@ -43,7 +43,7 @@ io.on('connection',(socket)=>{
         console.log('user joined room ',room);
     })
 
-    socket.on("Hello",(newMessage)=>{
+    socket.on("new-message",(newMessage)=>{
         console.log("new message send is in socket",newMessage);
         let chat=newMessage.chat;
 
@@ -52,11 +52,11 @@ io.on('connection',(socket)=>{
         chat.users.forEach((user) => {
 
             console.log("running for each ",user);
-            if(user===newMessage.sender._id)
+            if(user._id===newMessage.sender._id)
             return;
 
-            socket.in(user._id).emit('hii',newMessage);
-            // socket.in(user).emit('hii',newMessage)
+            // socket.in(user._id).emit('message-received',newMessage);
+            socket.in(user._id).emit('hii',newMessage)
         });
 
     })

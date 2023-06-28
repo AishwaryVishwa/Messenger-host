@@ -71,7 +71,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
       })
       // console.log(data);
       console.log("sending new message here");
-      socket.emit('Hello', data);
+      socket.emit('new-message', data);
       //  fetchMessages();
       setMessages([...Messages, data]);
     } catch (error) {
@@ -98,7 +98,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
   }, [selectedChat])
 
   useEffect(() => {
-    // socket.on('hii', (msgreceived) => {
+    // socket.on('message-received', (msgreceived) => {
 
     //   console.log("message received on client side ",msgreceived);
     //   if (!compareSelectedChat || compareSelectedChat !== msgreceived.chat.sender) {
@@ -109,10 +109,22 @@ function Chats({ fetchAgain, setFetchAgain }) {
     //   }
     // })
 
-    socket.on('hii',(data)=>{
+    socket.on('hii', (data) => {
       console.log("hiiiiiii");
-      setMessages([...Messages,data])
+      // console.log('compare ', compareSelectedChat._id === data.chat._id);
+      console.log("user", compareSelectedChat);
+      console.log("sender", data.chat);
+      if (!compareSelectedChat || compareSelectedChat._id === data.chat._id) {
+        setMessages([...Messages, data]);
+      }
+      else {
+        console.log(" notification work required");
+        
+      
+      }
     })
+
+   
   })
 
 
@@ -126,7 +138,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
         m={2}
         bg='white'
         // bg='black'
-
+        // display={{ base: "none", md: "block" }}
         w='8xl'
         borderRadius='10'
       >

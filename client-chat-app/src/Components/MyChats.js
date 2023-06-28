@@ -119,6 +119,7 @@ function MyChats({ fetchAgain, setFetchAgain }) {
         bg='white'
         borderRadius='10'
         overflowY='scroll'
+        display={{ base: "none", md: "block" }}
       >
 
         <Box>
