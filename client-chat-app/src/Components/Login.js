@@ -17,7 +17,7 @@ function Login() {
         password: passw
     }
     const loginHandler = async () => {
-        const res = await axios.post('/login', loginData)
+        const res = await axios.post('https://chat-backend-otkw.onrender.com/login', loginData)
         if (res.status === 200) {
             window.alert('login successful')
             console.log(res.data);
