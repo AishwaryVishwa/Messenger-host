@@ -1,13 +1,15 @@
 const express =require('express')
 const dotenv=require('dotenv')
 const cookieParser=require('cookie-parser')
-// const cors = require('cors');
+const cors = require('cors');
 const {Server}=require('socket.io')
 dotenv.config({path:'./config.env'})
 
 const app=express();
 
-// app.use(cors())
+app.use(cors({
+    origin: 'https://chat-application-frontend-git-main-aishwaryvishwa.vercel.app'
+}))
 app.use(express.json())
 app.use(cookieParser())
 require('./DATABASE/dbConnect')
