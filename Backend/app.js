@@ -1,29 +1,31 @@
 const express =require('express')
 const dotenv=require('dotenv')
 const cookieParser=require('cookie-parser')
-// const cors = require('cors');
+const cors = require('cors');
 const {Server}=require('socket.io')
 dotenv.config({path:'./config.env'})
 
 const app=express();
 
-// app.use(cors())
+app.use(cors({
+    options:process.env.FRONT_URL
+}))
 app.use(express.json())
 app.use(cookieParser())
 require('./DATABASE/dbConnect')
 app.use(require('./Router/auth'))
 
+const  PORT=process.env.PORT || 8000;
 
-
- const server=app.listen(8000,()=>{
-    console.log('server started at 8000');
+ const server=app.listen(PORT,()=>{
+    console.log(`server started at ${PORT} `);
 })
 
 
 const io=new Server(server,{
     pingTimeout:60000,
     cors:{
-        origin:"http://localhost:3000"
+        origin:process.env.FRONT_URL
     }
 })
 
