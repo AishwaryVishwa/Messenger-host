@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
             console.log(verified);
             if (verified) {
 
-                res.send({
+                res.status(200).send({
                     _id: isPresent._id,
                     name: isPresent.name,
                     email: isPresent.email,
@@ -62,10 +62,10 @@ router.post('/login', async (req, res) => {
                 })
 
             } else {
-                res.send({ message: "wrong credentials" })
+                res.status(203).send({ message: "wrong credentials" })
             }
         } else {
-            res.send({ message: "user is not present" })
+            res.status(203).send({ message: "user is not present" })
         }
 
     } catch (error) {

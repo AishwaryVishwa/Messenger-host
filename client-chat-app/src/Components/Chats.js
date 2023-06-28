@@ -23,8 +23,8 @@ import UpdateGroupModal from './UpdateGroupModal';
 import SenderDetails from './SenderDetails';
 
 
-var ENDPOINT = "https://chat-application-backend-kjw6m2wkh-aishwaryvishwa.vercel.app"
-let socket, compareSelectedChat;
+var ENDPOINT = "http://localhost:8000"
+var socket, compareSelectedChat;
 function Chats({ fetchAgain, setFetchAgain }) {
   const { userData, chatList, setChatList, selectedChat, setSelectedChat } = useContext(userContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -42,7 +42,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
       console.log("connected to room ", room)
     });
 
-  },[])
+  }, [])
   const TypingHandler = (e) => {
     setNewMessage(e.target.value);
 
@@ -95,24 +95,36 @@ function Chats({ fetchAgain, setFetchAgain }) {
     setLoading(false)
     fetchMessages();
     compareSelectedChat = selectedChat;
+    setMessages([]);
   }, [selectedChat])
 
   useEffect(() => {
-    socket.on('hii', (msgreceived) => {
+    // socket.on('hii', (msgreceived) => {
 
-      console.log("message received on client side ",msgreceived);
-      if (!compareSelectedChat || compareSelectedChat !== msgreceived.chat.sender) {
-        console.log(" notification work required");
+    //   console.log("message received on client side ",msgreceived);
+    //   console.log("compare ",compareSelectedChat);
+    //   if (!compareSelectedChat || compareSelectedChat !== msgreceived.chat.sender) {
+    //     console.log(" notification work required");
+    //   }
+    //   else {
+    //     setMessages([...Messages, msgreceived]);
+    //   }
+    // })
+
+    socket.on('hii', (data) => {
+      console.log("hiiiiiii");
+      // console.log('compare ', compareSelectedChat._id === data.chat._id);
+      console.log("user", compareSelectedChat);
+      console.log("sender", data.chat);
+      if (!compareSelectedChat || compareSelectedChat._id === data.chat._id) {
+        setMessages([...Messages, data]);
       }
       else {
-        setMessages([...Messages, msgreceived]);
+        console.log(" notification work required");
+        
+      
       }
     })
-
-    // socket.on('hii',(data)=>{
-    //   console.log("hiiiiiii");
-    //   setMessages([...Messages,data])
-    // })
   })
 
 

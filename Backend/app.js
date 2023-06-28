@@ -23,7 +23,7 @@ app.use(require('./Router/auth'))
 const io=new Server(server,{
     pingTimeout:60000,
     cors:{
-        origin:"https://chat-application-frontend-ktgng456p-aishwaryvishwa.vercel.app"
+        origin:"http://localhost:3000"
     }
 })
 
@@ -52,7 +52,7 @@ io.on('connection',(socket)=>{
         chat.users.forEach((user) => {
 
             console.log("running for each ",user);
-            if(user===newMessage.sender._id)
+            if(user._id===newMessage.sender._id)
             return;
 
             socket.in(user._id).emit('hii',newMessage);
