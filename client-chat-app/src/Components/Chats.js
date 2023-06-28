@@ -23,7 +23,7 @@ import UpdateGroupModal from './UpdateGroupModal';
 import SenderDetails from './SenderDetails';
 
 
-var ENDPOINT = "http://localhost:8000"
+var ENDPOINT = "https://chat-backend-otkw.onrender.com"
 var socket, compareSelectedChat;
 function Chats({ fetchAgain, setFetchAgain }) {
   const { userData, chatList, setChatList, selectedChat, setSelectedChat } = useContext(userContext)
