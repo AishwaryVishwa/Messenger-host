@@ -24,7 +24,7 @@ import SenderDetails from './SenderDetails';
 
 
 var ENDPOINT = "http://localhost:8000"
-let socket, compareSelectedChat;
+var socket, compareSelectedChat;
 function Chats({ fetchAgain, setFetchAgain }) {
   const { userData, chatList, setChatList, selectedChat, setSelectedChat } = useContext(userContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -42,7 +42,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
       console.log("connected to room ", room)
     });
 
-  },[])
+  }, [])
   const TypingHandler = (e) => {
     setNewMessage(e.target.value);
 
@@ -95,12 +95,14 @@ function Chats({ fetchAgain, setFetchAgain }) {
     setLoading(false)
     fetchMessages();
     compareSelectedChat = selectedChat;
+    setMessages([]);
   }, [selectedChat])
 
   useEffect(() => {
     // socket.on('message-received', (msgreceived) => {
 
     //   console.log("message received on client side ",msgreceived);
+    //   console.log("compare ",compareSelectedChat);
     //   if (!compareSelectedChat || compareSelectedChat !== msgreceived.chat.sender) {
     //     console.log(" notification work required");
     //   }

@@ -19,12 +19,11 @@ function Login() {
     const loginHandler = async () => {
         const res = await axios.post('/login', loginData)
         if (res.status === 200) {
-
             window.alert('login successful')
             console.log(res.data);
             localStorage.setItem('userInfo',JSON.stringify(res.data))
             navigate('/chatPage')
-        }else{
+        }else if(res.status===203){
             window.alert(res.data.message)
         }
     }
