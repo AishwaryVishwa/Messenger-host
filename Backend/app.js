@@ -25,7 +25,7 @@ console.log(process.env.FRONT_URL,"ye he aapke frontend ka url");
 const io=new Server(server,{
     pingTimeout:60000,
     cors:{
-        origin:process.env.FRONT_URL
+        origin:'https://64c26f64aa8a0b0312e87017--visionary-puppy-76fdf3.netlify.app/'
     }
 })
 
