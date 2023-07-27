@@ -58,7 +58,7 @@ function Register() {
     }
     const submitHandler = async () => {
 
-        const res = await axios.post('https://backend-28m5.onrender.com/register', user);
+        const res = await axios.post('/register', user);
 
         if (res.status === 201)
             window.alert(res.message)

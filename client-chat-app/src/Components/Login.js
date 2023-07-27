@@ -17,7 +17,7 @@ function Login() {
         password: passw
     }
     const loginHandler = async () => {
-        const res = await axios.post('https://backend-28m5.onrender.com/login', loginData)
+        const res = await axios.post('/login', loginData)
         if (res.status === 200) {
             window.alert('login successful')
             console.log(res.data);

@@ -23,7 +23,7 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
   const [userList, setUserList] = useState([])
   const [groupMember, setGroupMembers] = useState([])
   const searchApi = async (searchUser, userData) => {
-    const { data } = await axios.get(`https://backend-28m5.onrender.com/searchUsers?search=${searchUser}&user=${userData}`);
+    const { data } = await axios.get(`/searchUsers?search=${searchUser}&user=${userData}`);
 
 
     console.log(data);
@@ -52,7 +52,7 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
           grpId: selectedChat._id
         })
       };
-      const res = await fetch('https://backend-28m5.onrender.com/removeFromGrp', requestOptions)
+      const res = await fetch('/removeFromGrp', requestOptions)
       console.log(res.body);
       const data = await res.json();
       console.log("data is",data);
@@ -71,7 +71,7 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
             grpId: selectedChat._id
           })
         };
-        const res = await fetch('https://backend-28m5.onrender.com/deleteGroup', requestOptions)
+        const res = await fetch('/deleteGroup', requestOptions)
         const data = await res.json();
         setFetchAgain(!fetchAgain)
         console.log("deleted grp",data);
@@ -101,7 +101,7 @@ function UpdateGroupModal({ fetchAgain, setFetchAgain, onClose }) {
           newname: groupName
         })
       };  
-      const res = await fetch('https://backend-28m5.onrender.com/renameGroup', requestOptions)
+      const res = await fetch('/renameGroup', requestOptions)
       const data = await res.json();
       console.log(data);
 

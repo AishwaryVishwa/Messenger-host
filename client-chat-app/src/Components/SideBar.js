@@ -54,7 +54,7 @@ function SideBar({fetchAgain,setFetchAgain}) {
     }
 
     const searchApi = async () => {
-        const { data } = await axios.get(`https://backend-28m5.onrender.com/searchUsers?search=${searchUser}&user=${userData}`);
+        const { data } = await axios.get(`/searchUsers?search=${searchUser}&user=${userData}`);
         console.log(data);
         if (data.length===0) {
             toast({

@@ -23,7 +23,7 @@ import UpdateGroupModal from './UpdateGroupModal';
 import SenderDetails from './SenderDetails';
 
 
-var ENDPOINT = "https://backend-28m5.onrender.com"
+var ENDPOINT = ""
 var socket, compareSelectedChat;
 function Chats({ fetchAgain, setFetchAgain }) {
   const { userData, chatList, setChatList, selectedChat, setSelectedChat } = useContext(userContext)
@@ -64,7 +64,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
     try {
 
       setNewMessage("");
-      const { data } = await axios.post('https://backend-28m5.onrender.com/sendMessage', {
+      const { data } = await axios.post('/sendMessage', {
         chatID: selectedChat._id,
         userId: userData._id,
         content: NewMessage
@@ -81,7 +81,7 @@ function Chats({ fetchAgain, setFetchAgain }) {
 
   const fetchMessages = async () => {
     try {
-      const { data } = await axios.get(`https://backend-28m5.onrender.com/allMessages?chat=${selectedChat._id}`)
+      const { data } = await axios.get(`/allMessages?chat=${selectedChat._id}`)
       console.log(data);
       setMessages(data);
       setLoading(true);
