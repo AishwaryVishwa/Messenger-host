@@ -21,7 +21,7 @@ const  PORT=process.env.PORT || 8000;
     console.log(`server started at ${PORT} `);
 })
 
-
+console.log(process.env.FRONT_URL,"ye he aapke frontend ka url");
 const io=new Server(server,{
     pingTimeout:60000,
     cors:{
